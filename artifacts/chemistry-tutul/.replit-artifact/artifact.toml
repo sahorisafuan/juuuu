@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Chemistry Tutul LMS"
+description = "A learning management system for Chemistry Tutul, with a public course catalog and distinct student, teacher, and administrator experiences."
+version = "1.0.0"
+id = "artifacts/chemistry-tutul"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21821
+
+[services.development]
+run = "pnpm --filter @workspace/chemistry-tutul run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/chemistry-tutul", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/chemistry-tutul/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21821"
+BASE_PATH = "/"
