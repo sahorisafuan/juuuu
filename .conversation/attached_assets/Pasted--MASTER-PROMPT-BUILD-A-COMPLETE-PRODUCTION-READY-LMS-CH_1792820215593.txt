@@ -1,0 +1,1711 @@
+# MASTER PROMPT: BUILD A COMPLETE PRODUCTION-READY LMS — CHEMISTRY TUTUL
+
+## 1. YOUR ROLE
+
+Act as a senior full-stack software engineer, software architect, UI/UX designer, database engineer, authentication and security engineer, payment integration engineer, QA engineer, and DevOps engineer.
+
+Your task is to build a complete, production-ready Learning Management System (LMS) for an education business in Bangladesh called **Chemistry Tutul**.
+
+Do not build merely a frontend prototype, static website, UI mockup, or collection of disconnected pages. Build an integrated application with real authentication, persistent database storage, role-based permissions, verified payments, course management, student enrollment, recurring monthly billing, teacher tools, examination and grading functionality, and an administrator-controlled website.
+
+The project must be maintainable, secure, responsive, well-tested, and ready for production deployment when the required external services and credentials are available.
+
+You are working inside my chosen coding agent/editor and project repository. Inspect the existing project before modifying files. Preserve useful existing code and avoid unnecessary rewrites.
+
+Work autonomously on implementation steps that do not require my credentials or decisions. When external credentials, merchant configuration, or manual account setup are required, implement the integration correctly, document the exact steps, and continue with other work rather than fabricating success.
+
+---
+
+## 2. PROJECT OBJECTIVES
+
+Build an LMS with the following major capabilities:
+
+1. A premium, responsive public education website.
+2. Student registration and secure sign-in.
+3. A one-time admission fee that must be paid before a student is admitted.
+4. Optional course-specific enrollment fees.
+5. Monthly tuition invoicing and payment tracking.
+6. A complete course and class management system.
+7. Separate, protected administrator and teacher panels.
+8. A student dashboard showing enrollments, invoices, payments, sessions, examinations, and dated results.
+9. A teacher examination builder with automatic marking and manual grading.
+10. An administrator panel for managing users, teachers, courses, admission, billing, permissions, website branding, and settings.
+11. Configurable logo, favicon, website name, colors, homepage content, SEO settings, and announcements.
+12. A secure production-oriented architecture with database migrations, authorization, audit logs, automated tests, and deployment documentation.
+
+The public website, administrator panel, teacher panel, and student dashboard must have separate layouts and navigation. They may use one shared codebase and database, but their authentication requirements, permissions, and user experiences must be distinct.
+
+---
+
+## 3. FIXED TECHNOLOGY STACK
+
+Use this stack unless a genuine technical blocker is discovered. Explain any proposed change before replacing an approved technology.
+
+### Application framework
+
+- Next.js with App Router.
+- React.
+- TypeScript with strict type checking.
+- Server Components by default.
+- Client Components only where interactivity requires them.
+- Server Actions and Route Handlers where appropriate.
+- Zod for request validation and typed data boundaries.
+
+### UI and styling
+
+- Tailwind CSS.
+- shadcn/ui.
+- Lucide icons.
+- React Hook Form with Zod validation.
+- TanStack Table for complex administrative data tables.
+- Recharts for useful administrative charts.
+- A maintained rich-text editor, such as Tiptap, for course content.
+- Responsive layouts for mobile, tablet, laptop, and desktop.
+
+Use current stable, mutually compatible package versions. Follow the existing repository's package manager. Avoid unnecessary dependencies.
+
+### Authentication
+
+- Clerk for account creation, sign-in, password recovery, email verification, and session management.
+- Secure role and permission checks enforced on the server.
+- Clerk identities mapped consistently to application database profiles.
+- Supabase's currently supported Clerk authentication integration, configured according to current official documentation.
+
+Do not create a second, competing password authentication system in the application.
+
+### Database and storage
+
+- Supabase Cloud.
+- PostgreSQL.
+- Version-controlled SQL migrations.
+- Supabase Storage for uploaded files.
+- Row Level Security (RLS) wherever appropriate.
+- Foreign keys, unique constraints, database indexes, and safe database transactions.
+
+### Payments
+
+- UddoktaPay.
+- Server-side charge creation and transaction verification.
+- Verified webhooks or callbacks where supported by the merchant configuration.
+- Sandbox/testing configuration before live transactions.
+- Idempotent payment processing and invoice reconciliation.
+
+### Hosting
+
+- Vercel for the Next.js application.
+- Supabase Cloud for PostgreSQL and storage.
+- Environment-specific configuration for local development, previews, and production.
+
+Do not assume that deployment, payment activation, domain registration, or database provisioning has already occurred.
+
+---
+
+## 4. CODING AGENT OPERATING RULES
+
+Before implementing features, inspect:
+
+- The repository structure.
+- package.json and the package manager.
+- Existing routes and components.
+- Existing database schema and migrations.
+- Environment variable names and configuration.
+- Authentication and payment integrations.
+- Existing tests.
+- Git status and uncommitted changes.
+
+Do not delete, overwrite, or recreate an existing feature without first understanding it.
+
+### Implementation approach
+
+Implement the project in logical phases, using this master prompt as the complete specification.
+
+Do not stop after producing a plan. After the initial audit, begin implementation and continue through independent tasks as long as the work is safe and the environment allows it.
+
+For every phase:
+
+1. Inspect the relevant files.
+2. Identify prerequisites and dependencies.
+3. Implement actual functionality.
+4. Run applicable lint, TypeScript, build, and test commands.
+5. Fix errors introduced by your changes.
+6. Review authorization and database security.
+7. Update the documentation.
+8. Report files changed, checks performed, results, and remaining blockers.
+
+Do not report successful tests unless you actually ran them. Do not say a feature is complete when only its visual interface exists.
+
+If a feature depends on credentials I have not supplied, create the correct integration, provide placeholder environment variables, document manual setup, and use sandbox or test doubles only in tests.
+
+Do not request that I paste real production passwords, private API keys, or database secrets into source files or public chat messages.
+
+---
+
+## 5. BRANDING AND DESIGN REQUIREMENTS
+
+The product name is **Chemistry Tutul**.
+
+Use the following references to understand education-site structure, course presentation, navigation patterns, and the general education-business user experience:
+
+- https://rakibsclassroom.com/
+- https://www.redwansmethod.com/
+
+These are design references only. Do not copy their source code, distinctive branding, logos, images, or proprietary design assets. Create an original visual identity for Chemistry Tutul.
+
+### Desired appearance
+
+The website must look premium, trustworthy, educational, friendly, modern, and easy to navigate.
+
+Use:
+
+- Clear typography and readable font sizes.
+- Consistent spacing and layout rules.
+- Carefully designed cards and page sections.
+- Accessible contrast and visible focus states.
+- Consistent buttons, forms, badges, tables, dialogs, and notifications.
+- Subtle transitions where useful.
+- Thoughtful loading skeletons and empty states.
+- Useful error messages and success feedback.
+- Responsive mobile navigation.
+- Attractive but restrained charts and dashboard visualizations.
+- Bengali text support without breaking layouts.
+- Appropriate support for Bengali and English content.
+
+Avoid excessive gradients, unnecessary animations, crowded layouts, and oversized decorative elements.
+
+### Responsive behavior
+
+Test at representative mobile, tablet, laptop, and desktop widths.
+
+Ensure that:
+
+- Navigation works with touch and keyboard input.
+- Dashboard sidebars become usable mobile navigation.
+- Tables remain readable or provide a suitable mobile presentation.
+- Forms fit narrow screens.
+- Modals and dropdowns remain usable on touch devices.
+- Long Bengali text does not overflow cards or buttons.
+- Exam interfaces remain usable on phones and tablets.
+
+---
+
+## 6. APPLICATION ROUTES AND LAYOUTS
+
+Create separate layout groups for the public website and authenticated areas.
+
+Suggested routes:
+
+### Public website
+
+- `/`
+- `/courses`
+- `/courses/[slug]`
+- `/classes`
+- `/classes/[slug]`
+- `/pricing`
+- `/about`
+- `/contact`
+- `/faq`
+- `/privacy-policy`
+- `/terms`
+- `/refund-policy`
+
+### Student authentication and dashboard
+
+- `/student/sign-in`
+- `/student/sign-up`
+- `/student`
+- `/student/courses`
+- `/student/courses/[courseId]`
+- `/student/billing`
+- `/student/billing/[invoiceId]`
+- `/student/exams`
+- `/student/exams/[examId]`
+- `/student/attempts/[attemptId]`
+- `/student/results`
+- `/student/results/[resultId]`
+- `/student/devices`
+- `/student/notifications`
+- `/student/settings`
+
+### Teacher panel
+
+- `/teacher/sign-in`
+- `/teacher`
+- `/teacher/courses`
+- `/teacher/courses/new`
+- `/teacher/courses/[courseId]`
+- `/teacher/courses/[courseId]/content`
+- `/teacher/classes`
+- `/teacher/categories`
+- `/teacher/question-bank`
+- `/teacher/exams`
+- `/teacher/exams/new`
+- `/teacher/exams/[examId]/edit`
+- `/teacher/grading`
+- `/teacher/students` (only where permitted)
+- `/teacher/notifications`
+- `/teacher/settings`
+
+### Administrator panel
+
+- `/admin/sign-in`
+- `/admin`
+- `/admin/users`
+- `/admin/students`
+- `/admin/teachers`
+- `/admin/roles`
+- `/admin/permissions`
+- `/admin/classes`
+- `/admin/categories`
+- `/admin/courses`
+- `/admin/enrollments`
+- `/admin/admissions`
+- `/admin/billing`
+- `/admin/invoices`
+- `/admin/payments`
+- `/admin/refunds`
+- `/admin/exams`
+- `/admin/results`
+- `/admin/announcements`
+- `/admin/notifications`
+- `/admin/branding`
+- `/admin/homepage`
+- `/admin/seo`
+- `/admin/settings`
+- `/admin/audit-logs`
+- `/admin/reports`
+
+Adapt the routes if the existing project uses a better structure, but retain their functional separation and protections.
+
+Distinct sign-in pages do not require separate authentication providers. All panels should use Clerk while enforcing appropriate server-side authorization.
+
+---
+
+## 7. AUTHENTICATION, ROLES, AND ADMINISTRATOR PROVISIONING
+
+Implement a clear authorization model.
+
+### Roles
+
+At minimum:
+
+- `admin`
+- `teacher`
+- `student`
+
+Add a granular permission system for actions such as:
+
+- `manage_users`
+- `manage_teachers`
+- `manage_roles`
+- `manage_courses`
+- `manage_course_content`
+- `manage_course_pricing`
+- `manage_categories`
+- `manage_admissions`
+- `manage_billing`
+- `manage_refunds`
+- `manage_exams`
+- `manage_exam_results`
+- `manage_site_branding`
+- `manage_site_settings`
+- `manage_notifications`
+- `view_reports`
+- `view_audit_logs`
+
+An administrator should be able to grant and revoke appropriate permissions according to a clearly defined policy.
+
+### Student registration
+
+Students can create accounts through the student registration interface.
+
+New student registration must never create an administrator or teacher account automatically.
+
+Use validated registration fields such as:
+
+- Full name.
+- Email address.
+- Optional phone number.
+- Optional preferred language.
+
+Collect only necessary information.
+
+### Teacher accounts
+
+Teachers should be invited, created, or approved through an administrator-controlled workflow.
+
+Teachers can access the teacher panel only after their approved account has been assigned the teacher role.
+
+### Administrator account
+
+Use a secure one-time bootstrap process based on an environment variable such as:
+
+`INITIAL_ADMIN_EMAIL=`
+
+The email must match the intended verified administrator identity in Clerk.
+
+The process must fail safely when the account is absent, when the email is not verified, or when administrative provisioning has already occurred.
+
+Never hard-code an administrator password or expose one in source code, a seed file, public JavaScript, or a committed environment file.
+
+Set the password through Clerk's supported account setup or recovery flow. Enable multifactor authentication for administrator accounts where supported.
+
+Never allow a user to elevate their own role by editing a profile field, modifying browser state, or submitting an API request.
+
+### Authorization
+
+Check identity, role, permission, and record ownership at the server boundary for every protected operation.
+
+Use protected layouts and middleware for navigation control, but do not rely on middleware or hidden buttons as the only security mechanism.
+
+---
+
+## 8. DATABASE DESIGN
+
+Create a normalized, maintainable relational schema.
+
+Use UUID primary keys for application entities unless there is a justified reason otherwise.
+
+Map Clerk user IDs to an internal application profile using a stable, unique external identity field.
+
+Suggested tables include:
+
+### Identity and permissions
+
+- `user_profiles`
+- `user_roles`
+- `roles`
+- `permissions`
+- `role_permissions`
+- `user_permissions`
+- `teacher_invitations`
+- `profile_events`
+
+Avoid redundant role representations that can drift out of sync.
+
+### Academic structure
+
+- `classes`
+- `categories`
+- `courses`
+- `course_categories`
+- `course_teachers`
+- `course_modules`
+- `lessons`
+- `lesson_resources`
+- `course_prerequisites`
+- `lesson_progress`
+
+### Admission and enrollment
+
+- `admission_applications`
+- `admissions`
+- `enrollments`
+- `enrollment_events`
+
+Keep admission status distinct from course enrollment status.
+
+### Billing and payments
+
+- `fee_policies`
+- `billing_plans`
+- `invoices`
+- `invoice_items`
+- `payment_attempts`
+- `payment_events`
+- `payment_reconciliation`
+- `refunds`
+- `manual_payment_adjustments`
+
+### Examination
+
+- `question_bank`
+- `question_options`
+- `question_tags`
+- `exams`
+- `exam_questions`
+- `exam_attempts`
+- `attempt_answers`
+- `exam_results`
+- `manual_grading`
+- `exam_feedback`
+
+### Website and administration
+
+- `site_settings`
+- `media_assets`
+- `homepage_sections`
+- `announcements`
+- `notifications`
+- `notification_preferences`
+- `audit_logs`
+- `session_audit_events`
+
+Adjust the schema when necessary, but document the reasons and maintain migration history.
+
+### Database rules
+
+- Use foreign keys for relationships.
+- Create indexes for frequently used filters, joins, dates, statuses, and owner IDs.
+- Apply unique constraints to prevent duplicate invoices, enrollments, and payment-event processing.
+- Use transactions for operations that must succeed or fail together.
+- Store all financial amounts as integer poisha.
+- Store timestamps consistently, preferably in UTC.
+- Use `Asia/Dhaka` for the billing calendar and date presentation.
+- Use explicit, validated status transitions.
+- Preserve financial history and examination attempt records.
+- Do not cascade-delete important financial or assessment history when a user is deactivated.
+- Use migrations and seed files under version control.
+- Never use mock data as production records.
+- Add development fixtures only to local or explicitly designated test environments.
+
+---
+
+## 9. CLERK AND SUPABASE INTEGRATION
+
+Before implementing this integration, consult the current official Clerk and Supabase documentation.
+
+Use a supported authentication integration so Supabase can apply appropriate database policies to authenticated users.
+
+Do not assume an older JWT-template setup is still the recommended method.
+
+Implement:
+
+- Clerk client-side authentication where appropriate.
+- Clerk server-side identity checks.
+- Secure mapping between Clerk identities and application profiles.
+- A server Supabase client using the authenticated user's supported token.
+- A browser Supabase client only where it is appropriate and safe.
+- An elevated server-only Supabase client only for operations that genuinely require it.
+- Correct Row Level Security policies.
+- Profile provisioning and synchronization.
+- Secure handling of Clerk webhooks, if used.
+- Idempotent webhook processing.
+- Session revocation using documented Clerk capabilities.
+
+### Row Level Security
+
+Enable and test RLS for exposed application tables.
+
+Examples of required access restrictions:
+
+- Students can read and update only permitted parts of their own profiles.
+- Students can read only their own invoices, payment history, enrollments, attempts, and results.
+- Students can access course content only when the admission and enrollment rules permit it.
+- Teachers can manage courses assigned to them and the related content they are authorized to control.
+- Teachers cannot read unrestricted financial records or alter administrator permissions.
+- Administrators can perform authorized management operations.
+- Public users can read only published public catalog data and safe site settings.
+- No user can access private answer keys or other students' assessment records through manipulated requests.
+
+Create and test RLS policies instead of assuming application-level checks are sufficient.
+
+Never expose an elevated database key, service-role secret, private API token, or other privileged credential in browser code.
+
+---
+
+## 10. COURSE AND CLASS MANAGEMENT
+
+Build a complete course-management experience for administrators and authorized teachers.
+
+### Classes and subjects
+
+The system must support configurable class levels and course subjects.
+
+Initial example catalog:
+
+- Classes 3–5: Bangla, English, Mathematics, BGS, Islamic Education, and Science.
+- Classes 6–7: specialized English and Mathematics courses.
+
+These are initial catalog examples, not hard-coded application restrictions. The administrator must be able to add, edit, reorder, archive, or rename classes, subjects, and categories from the admin panel.
+
+Support the education system's relevant class naming and Bengali text.
+
+### Course information
+
+Each course may include:
+
+- Course title and slug.
+- Short and long description.
+- Class and subject/category.
+- Course thumbnail.
+- Assigned teacher or teachers.
+- Admission/enrollment eligibility.
+- Admission policy references.
+- Optional course-specific enrollment fee.
+- Monthly tuition amount.
+- Publication status.
+- Start and end dates where applicable.
+- Course duration and syllabus.
+- Learning objectives.
+- Modules and lessons.
+- Video links.
+- Downloadable resources.
+- Prerequisites.
+- Featured-course settings.
+- Enrollment limits where applicable.
+
+### Course operations
+
+Authorized teachers must be able to:
+
+- Create and edit assigned courses.
+- Organize categories and class selections within the scope of their permissions.
+- Add, edit, reorder, publish, unpublish, and archive content as permitted.
+- Add lessons, modules, text, video links, attachments, and study materials.
+- Update prices and enrollment fees only when granted the appropriate permission.
+- Preview draft courses.
+- View relevant enrollment and lesson-progress information.
+
+Administrators can manage all course data and override permissions when policy allows.
+
+Create real database persistence for every editing workflow.
+
+---
+
+## 11. ADMISSION, ENROLLMENT, AND FEE POLICIES
+
+Separate these three financial concepts.
+
+### A. One-time admission fee
+
+The student must satisfy the admission policy before being treated as admitted.
+
+The default policy should charge the admission fee once per student, not once per course, unless the administrator deliberately configures a different policy.
+
+Whether the fee must be paid again after a withdrawal or new admission must be an explicit policy decision.
+
+### B. Course-specific enrollment fee
+
+This fee is optional.
+
+The default course-specific enrollment fee may be zero, unless configured by an administrator or authorized teacher.
+
+Only charge it where the course's current policy requires it.
+
+### C. Monthly tuition
+
+Monthly tuition is charged according to the relevant course or billing plan.
+
+The system must support configurable:
+
+- Tuition amount.
+- Billing period.
+- Invoice generation date.
+- Due date.
+- Payment deadline.
+- Grace period.
+- Late-payment status.
+- Access restriction policy for overdue tuition.
+- Refund and cancellation rules.
+- Manual adjustments with audit logging.
+
+If a student enrolls in more than one course, billing must clearly show which invoices and fees relate to each enrollment.
+
+Avoid charging the admission fee or an enrollment fee twice because of retries, redirects, page refreshes, or duplicate requests.
+
+### Payment state and admission state
+
+Do not treat an application as admitted just because the student reached a payment page.
+
+Implement explicit admission statuses, such as:
+
+- `pending`
+- `awaiting_payment`
+- `payment_verified`
+- `pending_approval`
+- `admitted`
+- `rejected`
+- `cancelled`
+
+Use an appropriate subset of these states and document the allowed transitions.
+
+The administrator should be able to configure whether verified admission payments trigger automatic admission or require manual approval.
+
+An invoice should have its own independent status.
+
+A verified paid invoice must not automatically make every course available. Course eligibility and enrollment rules still apply.
+
+---
+
+## 12. UDDOKTAPAY PAYMENT INTEGRATION
+
+Check UddoktaPay's current official documentation and the merchant-specific details before implementing API calls.
+
+Use a dedicated provider integration module, for example:
+
+`src/lib/payments/uddoktapay.ts`
+
+Create server-side operations for:
+
+- Initiating a checkout.
+- Storing the local payment attempt.
+- Validating payment return data.
+- Verifying a transaction.
+- Processing provider callbacks or webhooks where supported.
+- Handling duplicate events.
+- Reconciling uncertain transactions.
+- Recording the final result.
+- Safely linking a verified payment to the correct invoice and admission/enrollment records.
+
+Use configuration variables such as:
+
+- `UDDOKTAPAY_BASE_URL`
+- `UDDOKTAPAY_API_KEY`
+- `UDDOKTAPAY_ENVIRONMENT`
+
+Add any other secrets only where the provider's actual integration requires them.
+
+Do not assume a particular merchant domain or base URL is valid without verification.
+
+### Required payment flow
+
+1. The authenticated student initiates payment for an eligible invoice.
+2. The server reads the trusted invoice amount and policy.
+3. The server creates a local payment attempt with a unique reference.
+4. The server sends the required request to UddoktaPay.
+5. The student is redirected to the provider's returned checkout URL.
+6. A return redirect or provider notification is received.
+7. The server independently verifies the payment through the provider's documented verification mechanism.
+8. The server validates the returned payment status, relevant invoice/transaction identifiers, and expected amount.
+9. The application records the verified result in a safe transaction.
+10. Only then does the relevant invoice become paid and any configured admission/enrollment action take place.
+
+Never trust the browser to determine payment status.
+
+Never allow a user to submit an arbitrary amount, paid status, invoice owner, or transaction reference to obtain course access.
+
+### Idempotency and failures
+
+The payment handler must safely handle:
+
+- Repeated callbacks.
+- Duplicate webhook deliveries.
+- Multiple tabs.
+- Browser refreshes.
+- Pending transactions.
+- Failed payments.
+- Tampered payment amounts.
+- Incorrect invoice references.
+- Invalid signatures or callback authentication.
+- Provider timeouts.
+- Temporary database errors.
+- Successful payments whose redirect is interrupted.
+
+Do not mark an invoice paid until verification is complete.
+
+Do not discard potentially successful but unresolved transactions. Provide an administrator reconciliation workflow.
+
+Use sandbox mode and test credentials first. Never simulate a successful live payment.
+
+Automated tests may mock the provider adapter at the boundary; production checkout must use the real provider integration.
+
+### Refunds
+
+Implement a refund record and an administrator-controlled refund workflow.
+
+Call a provider refund API only if supported and enabled for the merchant account. Otherwise, provide a documented manual reconciliation workflow.
+
+Never represent a manual refund as a confirmed gateway refund without evidence.
+
+---
+
+## 13. MONTHLY BILLING SYSTEM
+
+Build a reliable recurring billing and invoice-generation system.
+
+The initial requirement is monthly invoicing; do not assume that automatic recurring card debits are available from the payment provider.
+
+Unless the merchant account explicitly supports recurring payment collection and that capability is verified, students should manually complete each monthly payment through checkout.
+
+### Billing features
+
+- Generate monthly invoices for eligible enrollments.
+- Assign each invoice a unique number.
+- Identify the student, course or plan, billing period, due date and amount.
+- Show invoices as pending, paid, overdue, cancelled, or refunded where appropriate.
+- Track payment attempts and transaction references.
+- Allow students to download or print receipts.
+- Send reminders using a configured, supported notification mechanism.
+- Allow authorized manual invoice adjustments with a mandatory reason and audit record.
+- Handle pauses, course withdrawals, and enrollment changes using explicit billing policies.
+- Prevent duplicate invoices for the same enrollment and billing period.
+
+Use Asia/Dhaka for the billing calendar.
+
+Use an idempotent scheduled process, such as a securely authenticated Vercel Cron job if suitable for the actual deployment plan.
+
+The scheduled endpoint must not be publicly usable without authorization. It must handle retries safely and should not depend on an in-memory timer inside a serverless function.
+
+Where email notifications require a provider that has not yet been selected, create a clean notification service interface, persist in-app notifications, and document the provider configuration needed for email delivery.
+
+---
+
+## 14. STUDENT DASHBOARD
+
+Create a complete, functional, responsive student dashboard.
+
+### Dashboard overview
+
+Display:
+
+- Student profile and admission status.
+- Active enrollments.
+- Available courses.
+- Recent learning activity.
+- Upcoming exams.
+- Recent exam results.
+- Outstanding invoices.
+- Payment status.
+- Useful announcements and notifications.
+
+### My courses
+
+Show the courses the student is actually enrolled in.
+
+Each course page should include:
+
+- Course overview.
+- Modules and lessons.
+- Authorized learning resources.
+- Course progress where enabled.
+- Previous and next lesson navigation.
+- Announcements.
+- Available examinations.
+- Current access status.
+
+Do not grant access merely because a user knows a course URL.
+
+### Billing and payments
+
+Show:
+
+- One-time admission fee.
+- Course-specific enrollment fees when applicable.
+- Monthly tuition invoices.
+- Billing period.
+- Due date.
+- Paid, pending, failed, or overdue status.
+- Payment method and transaction reference where available.
+- Amount, date, and receipt.
+- Payment history.
+
+Only display actual, persisted payment data.
+
+Students must not be able to read another student's financial records.
+
+### Profile and notifications
+
+Allow students to manage permitted profile fields, notification preferences, and supported personal settings.
+
+Show in-app notifications such as:
+
+- New course announcements.
+- Upcoming exams.
+- Published results.
+- New invoices.
+- Payment confirmations.
+- Billing reminders.
+
+### Devices and sessions
+
+Create a "My Devices & Sessions" section using Clerk's supported capabilities.
+
+Display only session information the provider actually makes available, potentially including a browser/device description, last activity, and current-session indication.
+
+Allow the student to revoke supported sessions.
+
+Never claim to identify a physical device using an invented hardware fingerprint.
+
+If the required device-management capability depends on Clerk plan access or an additional integration, clearly document that dependency and implement only what the configured service supports.
+
+---
+
+## 15. TEACHER PANEL
+
+Build a dedicated, authenticated teacher dashboard with its own navigation and design.
+
+### Teacher overview
+
+Show relevant information such as:
+
+- Assigned courses.
+- Course publication status.
+- Upcoming exams.
+- Recent student submissions.
+- Pending grading work.
+- Authorized enrollment statistics.
+- Course announcements.
+
+### Course management
+
+Teachers can manage only the courses and resources they are permitted to manage.
+
+Provide:
+
+- Create/edit course interfaces.
+- Class and category selection.
+- Course modules.
+- Lesson management.
+- Lesson ordering.
+- Rich-text lesson editing.
+- Video URLs.
+- Study materials and file uploads.
+- Draft previews.
+- Publishing controls.
+- Course pricing and enrollment-fee editing when authorized.
+- Course announcements.
+- Student progress views within their permissions.
+
+### Pricing restrictions
+
+Do not automatically grant every teacher access to the entire billing system.
+
+An ordinary teacher may be allowed to edit the price of their assigned course only after an administrator grants `manage_course_pricing`.
+
+Global admission policy, unrestricted financial management, refunds, user roles, secret settings, and site-wide branding remain administrator-controlled unless an explicit permission model authorizes otherwise.
+
+### Student oversight
+
+Teachers may view relevant student enrollment, submissions, and course progress when authorized.
+
+They must not receive unrestricted access to students' payment history, private profiles, login credentials, or unrelated course data.
+
+---
+
+## 16. COMPLETE EXAMINATION SYSTEM
+
+Build an integrated examination and assessment subsystem.
+
+### Question types
+
+Support:
+
+1. Single-answer multiple-choice questions.
+2. Multiple-answer multiple-choice questions.
+3. True/false questions.
+4. Fill-in-the-blank questions.
+5. Numerical questions with configurable tolerance.
+6. Matching questions.
+7. Ordering or sequencing questions.
+8. Short-answer questions.
+9. Long-answer and written-response questions.
+
+Use structured question data and appropriate validation for each type.
+
+Store question keys and grading rules securely, and never include protected answer keys in ordinary student exam payloads.
+
+### Teacher exam builder
+
+Teachers should be able to:
+
+- Create and edit exams.
+- Select a course and eligible class.
+- Add questions from the question bank.
+- Create new questions.
+- Edit options, answer keys and marking rules.
+- Assign marks to questions.
+- Set total marks and passing score.
+- Configure negative marking if required.
+- Set exam duration.
+- Schedule exam availability.
+- Set attempt limits.
+- Randomize questions or answer choices when configured.
+- Configure whether students see correct answers after submission.
+- Publish, unpublish or archive exams.
+- Preview the student experience.
+- View authorized exam submissions and results.
+
+### Student exam-taking interface
+
+Students should be able to:
+
+- View available exams.
+- Read exam instructions.
+- Start an authorized exam.
+- Answer questions through an accessible interface.
+- Navigate between questions.
+- See remaining time.
+- Save answers periodically.
+- Submit an exam.
+- View submission confirmation.
+- View a result when the configured publication policy permits it.
+
+### Assessment security
+
+Enforce exam availability and deadlines on the server.
+
+Do not trust the student's device clock.
+
+Implement server-authoritative attempt creation, submission validation and deadline checks.
+
+Autosave answers safely and prevent repeated submissions from creating inconsistent results or duplicate grading records.
+
+Question shuffling and a question pool may reduce answer sharing, but do not claim that the system can fully prevent cheating.
+
+### Automatic grading
+
+Automatically grade objectively gradable questions.
+
+Define deterministic rules for:
+
+- Single-answer MCQ.
+- Multiple-answer MCQ.
+- True/false.
+- Fill-in-the-blank matching.
+- Numerical tolerance.
+- Matching questions.
+- Ordering questions.
+
+Normalize answers only according to configured rules, and validate numerical boundaries and formats.
+
+Store the grading policy and sufficient attempt data to explain how a result was calculated.
+
+### Manual grading
+
+Provide a separate teacher grading queue for written responses.
+
+Teachers should be able to assign marks, provide feedback, save drafts, finalize grades, and publish results where permitted.
+
+A mixed exam should display a pending or provisional result until manually graded sections are finalized.
+
+### Exam results
+
+Persist:
+
+- Student.
+- Exam.
+- Course.
+- Attempt number.
+- Start and submission timestamps.
+- Total marks.
+- Marks earned.
+- Percentage.
+- Pass/fail status.
+- Answers submitted.
+- Grading status.
+- Feedback.
+- Result publication date.
+
+The student result history must display the correct examination date and score.
+
+Results should be reproducible from saved attempt data and grading rules.
+
+Protect published results from unauthorized editing, and log grade changes and regrading.
+
+---
+
+## 17. ADMINISTRATOR CONTROL PANEL
+
+The administrator panel must provide meaningful control over the entire application.
+
+### User management
+
+- Search, filter, and paginate users.
+- View permitted account profiles.
+- Manage student status.
+- Invite and manage teachers.
+- Assign roles and permissions.
+- Suspend or deactivate accounts.
+- Revoke sessions through supported provider capabilities.
+- View relevant enrollment and admission information.
+- Preserve necessary historical records after deactivation.
+
+Never expose passwords or allow arbitrary password retrieval.
+
+### Course and catalog management
+
+- Manage classes.
+- Manage categories.
+- Create and edit courses.
+- Assign teachers.
+- Set admission and enrollment rules.
+- Control course pricing policies.
+- Publish, archive, or remove public visibility.
+- Review course content.
+- Manage relevant resources and announcements.
+
+### Admission management
+
+- View admission applications.
+- Review payment status.
+- Approve or reject applications when configured.
+- Record admission decisions.
+- Manage admission policies.
+- View the student's admission history.
+- Audit status changes.
+
+Do not provide an untracked control that grants admission based on an unverified payment.
+
+If manual admission overrides are supported, require an authorized permission, a reason, and an audit record.
+
+### Billing management
+
+- View invoices.
+- Search payment transactions.
+- Reconcile unresolved payments.
+- Review overdue invoices.
+- Apply authorized manual adjustments.
+- Record refunds.
+- Export authorized reports.
+- Inspect financial history without modifying original provider events.
+
+### Examination administration
+
+- Review exams.
+- Monitor exam publication status.
+- View relevant submissions.
+- Manage exam configuration.
+- Review results and grading activity.
+- Apply appropriate administrative overrides with audit history.
+
+### Reports
+
+Provide useful reports for:
+
+- Total registered students.
+- Active students.
+- Teacher counts.
+- Course enrollments.
+- Admission applications.
+- Verified revenue.
+- Outstanding invoices.
+- Course activity.
+- Exam participation.
+- Exam results and pass rates.
+
+Financial reports must use actual persisted records and clearly distinguish verified receipts from pending transactions, refunds, and other non-revenue records.
+
+Do not label gross invoice values as collected revenue.
+
+---
+
+## 18. WEBSITE BRANDING AND SETTINGS
+
+Create an administrator-controlled settings area.
+
+Allow authorized administrators to change:
+
+- Website name.
+- Logo.
+- Favicon.
+- Primary color.
+- Secondary color.
+- Accent color.
+- Supported typography options.
+- Footer text.
+- Homepage headings.
+- Homepage sections.
+- Banner images.
+- Featured courses.
+- Announcements.
+- Public contact details.
+- Social links.
+- SEO titles and descriptions.
+- Default social preview image.
+- Supported maintenance mode settings.
+- Admission fee policy.
+- Billing and tuition settings.
+- Notification preferences.
+
+Persist these settings in Supabase.
+
+Use CSS variables or a controlled theme configuration rather than injecting arbitrary custom code into the site.
+
+Allow image uploads through properly validated storage operations.
+
+Validate file type and size. Store public branding assets separately from private course content and personal submissions.
+
+When the logo, favicon, or theme changes, the application should use the new saved settings without requiring a new code deployment.
+
+Avoid allowing ordinary administrators to insert arbitrary JavaScript into the site settings.
+
+---
+
+## 19. FILE STORAGE
+
+Use Supabase Storage with explicit access rules.
+
+Potential storage groups:
+
+- Public course thumbnails.
+- Public logos and favicon assets.
+- Private course resources.
+- Teacher uploads.
+- Student submissions.
+- Private administrative documents, if required.
+
+Apply file size limits, content-type validation, sensible filename handling, and authorization checks.
+
+Do not expose private bucket contents through publicly accessible links.
+
+Where private content access is allowed, use authenticated downloads or short-lived signed links and validate the user's authorization first.
+
+Do not treat a difficult-to-guess file URL as access control.
+
+---
+
+## 20. NOTIFICATIONS AND EMAIL
+
+Create a maintainable notification subsystem.
+
+Support in-app notifications for:
+
+- New enrollments.
+- Course announcements.
+- Upcoming examinations.
+- Published exam results.
+- New invoices.
+- Successful payment verification.
+- Upcoming tuition due dates.
+- Overdue invoices.
+- Teacher invitations.
+- Administrator decisions.
+
+Separate notification creation from the delivery provider.
+
+If transactional email is desired, select and configure a supported provider after verifying its availability, account requirements, and credentials. Use a documented adapter pattern so the provider can be changed later.
+
+Do not pretend email was delivered if only an in-app notification was stored.
+
+Track delivery failures where the email provider supports delivery status.
+
+---
+
+## 21. ADMINISTRATIVE AUDIT LOGS
+
+Create audit records for sensitive actions.
+
+Examples:
+
+- Role and permission changes.
+- Teacher invitations and account status changes.
+- Course pricing changes.
+- Admission decisions.
+- Billing adjustments.
+- Refund actions.
+- Payment reconciliation.
+- Exam publication.
+- Changes to finalized grades.
+- Website branding or billing settings changes.
+- Administrator session revocation where observable.
+- Maintenance mode changes.
+
+Include the acting identity, action type, affected entity, timestamp, and relevant non-sensitive metadata.
+
+Never include passwords, API keys, authentication tokens, full payment secrets, or unnecessary sensitive personal data in audit logs.
+
+Restrict access to audit history.
+
+Make critical event records append-only where practical, and do not provide a routine user-facing function to erase audit history.
+
+---
+
+## 22. SECURITY REQUIREMENTS
+
+Treat security as part of each feature, not as a final cosmetic step.
+
+### Authentication and authorization
+
+- Server-side authentication checks.
+- Server-side permission validation.
+- Resource ownership verification.
+- Safe administrator bootstrap.
+- Secure teacher onboarding.
+- No self-elevation of privileges.
+- Session revocation using supported integrations.
+
+### Database
+
+- RLS on exposed tables.
+- Least-privilege database access.
+- Server-only elevated credentials.
+- Foreign keys and database constraints.
+- Safe transaction handling.
+- No private records returned to unauthorized clients.
+- No public answer keys.
+
+### Input validation
+
+- Zod validation at untrusted data boundaries.
+- Server-side validation of IDs, amounts, statuses and ownership.
+- Safe rich-text rendering.
+- Upload validation.
+- Protection against mass assignment.
+- Safe error messages that do not reveal internal secrets.
+
+### Payments
+
+- Server-calculated amounts.
+- Verified provider responses.
+- Callback or webhook validation where supported.
+- Idempotent event handling.
+- Unique local invoice references.
+- Reconciliation of unresolved transactions.
+- No fake production payment success.
+- No automatic admission from unverified payment redirects.
+
+### Exams
+
+- Server-authoritative deadlines.
+- Safe attempt creation and submission.
+- Duplicate-submission protection.
+- Protected answer keys.
+- Authorized result access.
+- Audited grade changes.
+
+### Web application
+
+Implement suitable defenses for the actual application architecture, including secure headers, appropriate rate limiting on sensitive endpoints, CSRF protections where applicable, strict validation, secure handling of user-generated content, and safe dependency management.
+
+Do not invent claims of protection. Test the protections that you implement.
+
+---
+
+## 23. ENVIRONMENT VARIABLES
+
+Create a complete `.env.example` containing placeholders only.
+
+Potential variables include:
+
+```dotenv
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+
+UDDOKTAPAY_BASE_URL=
+UDDOKTAPAY_API_KEY=
+UDDOKTAPAY_ENVIRONMENT=
+
+INITIAL_ADMIN_EMAIL=
+SITE_URL=
+
+CLERK_WEBHOOK_SECRET=
+CRON_SECRET=
+```
+
+Adapt the Supabase public-key variable name to the current project configuration and official documentation. Use a separate server-only variable for any elevated database secret if that credential is genuinely necessary.
+
+Add email-provider variables only if that integration is selected.
+
+Requirements:
+
+- Never commit a real `.env` file.
+- Keep secrets out of client bundles.
+- Add `.env*` files to `.gitignore` as appropriate, while retaining `.env.example`.
+- Validate required environment variables at server startup or at the relevant integration boundary.
+- Document where each variable comes from.
+- Document separate development, preview, and production configurations.
+- Never print secret values in logs.
+
+Use development and sandbox credentials before testing a live gateway.
+
+---
+
+## 24. TESTING STRATEGY
+
+Set up appropriate automated testing.
+
+Suggested tools:
+
+- Vitest for unit and integration tests.
+- React Testing Library for component behavior where useful.
+- Playwright for browser-level end-to-end tests.
+- Supabase database-policy tests where feasible.
+
+### Authentication and permissions
+
+Test that:
+
+- Unauthenticated users cannot access protected dashboards.
+- Students cannot elevate their role.
+- Students cannot access another student's private data.
+- Teachers cannot edit unassigned courses.
+- Teachers cannot change restricted billing settings.
+- Unauthorized requests are rejected at the server boundary.
+- Administrator provisioning cannot be abused.
+
+### Payment workflows
+
+Test:
+
+- Successful verified payment.
+- Failed payment.
+- Pending payment.
+- Incorrect transaction reference.
+- Tampered amount.
+- Duplicate webhook or callback.
+- Verification timeout.
+- Reconciliation of unresolved payments.
+- Repeated requests and idempotency.
+- Admission remains blocked when payment is unverified.
+
+### Monthly billing
+
+Test:
+
+- Invoice generation.
+- Duplicate-job retries.
+- Correct billing-period assignment.
+- Due dates and timezone handling.
+- Overdue invoice handling.
+- Enrollment cancellation or pause.
+- Payment and invoice reconciliation.
+
+### Examination workflows
+
+Test:
+
+- Each question type.
+- Automatic scoring.
+- Numerical tolerance.
+- Timed submission.
+- Deadline enforcement.
+- Autosave.
+- Duplicate submission.
+- Attempt limits.
+- Unauthorized exam access.
+- Manual grading.
+- Mixed automatic and manual grading.
+- Published result visibility.
+- Protection of answer keys.
+
+### Production readiness
+
+Run:
+
+- Lint.
+- Strict TypeScript checks.
+- Unit tests.
+- Integration tests.
+- End-to-end tests for critical workflows.
+- Production build.
+- Relevant database migration and policy checks.
+
+Fix the errors you introduce before proceeding.
+
+---
+
+## 25. PERFORMANCE, ACCESSIBILITY, AND SEO
+
+Use sensible performance practices:
+
+- Server rendering for appropriate public pages.
+- Pagination for large administrative lists.
+- Indexed database queries.
+- Efficient query selection.
+- Avoid unnecessary client-side JavaScript.
+- Use optimized images and responsive image sizing.
+- Avoid fetching entire question banks or all students at once.
+- Cache only data that is safe to cache.
+- Never publicly cache private dashboard or payment responses.
+- Provide helpful loading and empty states.
+
+Accessibility requirements:
+
+- Semantic page headings.
+- Keyboard-operable navigation.
+- Visible focus indicators.
+- Form labels and error associations.
+- Appropriate button semantics.
+- Accessible dialogs.
+- Sufficient contrast.
+- Clear validation feedback.
+
+SEO requirements:
+
+- Page metadata.
+- Open Graph metadata.
+- Canonical URLs where appropriate.
+- Sitemap.
+- Robots configuration.
+- Descriptive course URLs.
+- Indexable public course information.
+- No indexing of private dashboards, authentication screens, or protected content.
+
+---
+
+## 26. RECOMMENDED PROJECT STRUCTURE
+
+Adapt the existing project instead of enforcing this structure blindly.
+
+```text
+src/
+  app/
+    (marketing)/
+    (auth)/
+    (student)/
+      student/
+    (teacher)/
+      teacher/
+    (admin)/
+      admin/
+    api/
+      payments/
+      webhooks/
+  components/
+    ui/
+    marketing/
+    student/
+    teacher/
+    admin/
+    forms/
+  lib/
+    auth/
+    permissions/
+    supabase/
+    billing/
+    payments/
+    courses/
+    admissions/
+    exams/
+    notifications/
+    storage/
+    validations/
+  hooks/
+  types/
+  config/
+
+supabase/
+  migrations/
+  seed.sql
+
+tests/
+  unit/
+  integration/
+  e2e/
+
+docs/
+  architecture.md
+  database.md
+  authentication.md
+  payments.md
+  deployment.md
+  testing.md
+  operations.md
+```
+
+Keep reusable business logic outside visual components.
+
+Do not place privileged business operations directly in client-side components.
+
+Create clear modules for authentication, permissions, payments, billing, exam scoring, data access, and validation.
+
+Avoid both excessive abstraction and large files that combine unrelated responsibilities.
+
+---
+
+## 27. DEPLOYMENT AND OPERATIONS
+
+Prepare the application for Vercel and Supabase Cloud.
+
+### Environments
+
+Document the setup for:
+
+- Local development.
+- Preview deployments.
+- Production deployment.
+
+Use separate production and testing credentials.
+
+### Database deployment
+
+- Version all database migrations.
+- Document initial Supabase setup.
+- Document safe migration execution.
+- Avoid destructive production seed scripts.
+- Document backup and recovery procedures.
+- Preserve historical data during schema changes.
+
+### Vercel deployment
+
+- Configure build settings.
+- Configure required environment variables.
+- Set production site URLs.
+- Configure authentication redirects.
+- Configure supported payment return and callback URLs.
+- Configure secure scheduled billing jobs if used.
+- Verify domain and HTTPS configuration.
+- Provide rollback instructions.
+
+Do not assume that a payment provider, custom domain, DNS record, or production database exists until confirmed.
+
+### Operations
+
+Document:
+
+- Common failures and troubleshooting.
+- Payment reconciliation.
+- Database backup and restoration.
+- Administrator recovery.
+- Key rotation procedures.
+- Deployment rollback.
+- Scheduled job monitoring.
+- Error reporting.
+- Safe incident response.
+
+Where a service requires manual account configuration or a provider dashboard action, provide precise, ordered instructions.
+
+---
+
+## 28. IMPLEMENTATION ORDER
+
+Build the project in the following sequence.
+
+### Phase 0: Repository audit and architecture
+
+Inspect the project, report findings, agree on the architecture, identify existing functionality, and prepare an actionable task list.
+
+### Phase 1: Foundation
+
+Implement the application structure, design system, reusable UI components, layout shells, environment documentation, and development tooling.
+
+### Phase 2: Authentication and database
+
+Implement Clerk, Supabase, migrations, profiles, roles, permissions, RLS, administrator provisioning, and teacher invitations.
+
+### Phase 3: Public website
+
+Implement homepage, course catalog, class pages, course details, pricing, about, contact, FAQ, metadata, and responsive navigation.
+
+### Phase 4: Course management and teacher panel
+
+Implement classes, categories, courses, teacher assignments, modules, lessons, resources, permissions, and real persistence.
+
+### Phase 5: Admission and payments
+
+Implement admission applications, fee policies, invoices, UddoktaPay checkout, verification, callbacks, idempotency, and reconciliation.
+
+### Phase 6: Student dashboard and billing
+
+Implement enrollment views, course access, monthly invoice generation, receipts, notifications, profiles, and session management.
+
+### Phase 7: Examination system
+
+Implement question banks, exam creation, scheduling, attempts, autosave, automatic grading, manual grading, and result history.
+
+### Phase 8: Administrator control panel
+
+Complete user management, permission management, billing controls, branding, homepage configuration, settings, reports, and audit logs.
+
+### Phase 9: Security and testing
+
+Complete the authorization audit, RLS checks, payment tests, exam tests, cross-user access tests, responsive testing, lint, type checking, and production build.
+
+### Phase 10: Production preparation
+
+Configure Vercel and Supabase production environments, authentication redirects, payment merchant settings, DNS/domain documentation, migrations, and launch verification.
+
+Do not mark a phase complete merely because its pages render.
+
+A phase is complete only when its essential workflows function, data persists, access restrictions are tested, and the acceptance criteria are met.
+
+---
+
+## 29. FINAL ACCEPTANCE CRITERIA
+
+The application must satisfy the following criteria before being declared production-ready.
+
+### Public website
+
+- The website looks polished and responsive.
+- Public course information comes from the database.
+- Unpublished courses are not displayed as published.
+- Students can start the registration and admission workflow.
+
+### Authentication and permissions
+
+- Student registration and login work.
+- Administrator login is protected.
+- Teacher login is protected.
+- Roles cannot be self-assigned.
+- Protected operations validate permissions on the server.
+- RLS prevents cross-user data exposure.
+
+### Course management
+
+- Administrators can control the catalog.
+- Teachers can manage authorized courses.
+- Changes persist in PostgreSQL.
+- Protected content is not publicly accessible.
+
+### Payments
+
+- UddoktaPay is integrated server-side.
+- Payment status is independently verified.
+- Duplicate callbacks are safe.
+- Invoice history is persistent.
+- Admission is granted only according to verified payment and the admission policy.
+- Optional course enrollment fees work correctly.
+- Monthly billing creates no duplicate invoices.
+
+### Student dashboard
+
+- Students see their actual enrollments.
+- Students see their real payment history.
+- Students can view course content permitted by policy.
+- Session management uses supported provider capabilities.
+- Examination history includes dates and results.
+
+### Teacher panel
+
+- Teachers can manage their authorized courses.
+- Teachers can create and configure examinations.
+- Teachers can grade manual responses.
+- Teachers cannot access unauthorized administrative functions.
+
+### Examination system
+
+- Supported question types work.
+- Attempt limits and deadlines are enforced on the server.
+- Objective questions are graded correctly.
+- Manual grading works.
+- Results persist and follow publication policies.
+- Answer keys are protected.
+
+### Admin panel
+
+- Administrators can manage students and teachers.
+- Administrators can manage permissions.
+- Administrators can manage classes, categories, courses, and fees.
+- Administrators can reconcile payments.
+- Administrators can customize the site branding.
+- Administrators can manage important website settings.
+- Sensitive administrative changes are audited.
+
+### Production
+
+- Critical and high-severity security issues are resolved.
+- The production build passes.
+- Relevant automated tests pass.
+- Environment configuration is documented.
+- Secrets are not committed or exposed to the browser.
+- Manual provider setup and outstanding external requirements are documented honestly.
+
+---
+
+## 30. YOUR FIRST ACTION
+
+Start now by inspecting the existing repository and checking the installed tools, package manager, routes, dependencies, environment configuration, database state, tests, and Git status.
+
+Do not immediately generate the entire LMS in one uncontrolled edit.
+
+First report what already exists and identify the safest implementation path. Then start Phase 1 and continue through the roadmap, preserving working code and verifying each phase.
+
+If you encounter an error, investigate the actual cause, repair it, and retest. Do not conceal errors or work around them by disabling security checks.
+
+If something requires credentials that I have not provided, implement the safe integration boundary and explain the exact manual configuration required.
+
+When finishing each phase, report:
+
+1. What was implemented.
+2. Which files and database migrations changed.
+3. Which tests and commands were actually run.
+4. What passed or failed.
+5. What still needs my action.
+6. The next recommended implementation step.
+
+Your objective is a complete, functional, secure, production-oriented Chemistry Tutul LMS—not just a design mockup or demonstration.
