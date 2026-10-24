@@ -3,34 +3,272 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Public catalog API for the Chemistry Tutul learning platform
 servers:
   - url: /api
     description: Base API path
 tags:
-  - name: health
-    description: Health operations
+  - name: public
+    description: Public website and course catalog
 paths:
-  /healthz:
+  /public/overview:
     get:
-      operationId: healthCheck
-      tags: [health]
-      summary: Health check
-      description: Returns server health status
+      operationId: getPublicOverview
+      tags: [public]
+      summary: Get public homepage content
       responses:
         "200":
-          description: Healthy
+          description: Homepage content and published catalog highlights
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthStatus"
+                $ref: "#/components/schemas/PublicOverview"
+  /public/classes:
+    get:
+      operationId: getPublicClasses
+      tags: [public]
+      summary: List published class levels
+      responses:
+        "200":
+          description: Published class levels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublicClass"
+  /public/categories:
+    get:
+      operationId: getPublicCategories
+      tags: [public]
+      summary: List published course categories
+      responses:
+        "200":
+          description: Published course categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublicCategory"
+  /public/courses:
+    get:
+      operationId: getPublicCourses
+      tags: [public]
+      summary: Search and filter published courses
+      parameters:
+        - name: classSlug
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: categorySlug
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Matching published courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublicCourseSummary"
+  /public/courses/{slug}:
+    get:
+      operationId: getPublicCourse
+      tags: [public]
+      summary: Get a published course by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Published course details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicCourse"
+        "404":
+          description: Course not found or not published
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
 components:
   schemas:
-    HealthStatus:
+    ApiError:
       type: object
+      required: [error]
       properties:
-        status:
+        error:
           type: string
+    PublicClass:
+      type: object
+      required: [id, name, slug, sortOrder, publishedCourseCount]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        sortOrder:
+          type: integer
+        publishedCourseCount:
+          type: integer
+    PublicCategory:
+      type: object
+      required: [id, name, slug]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+    PublicCourseSummary:
+      type: object
       required:
-        - status
+        - id
+        - slug
+        - title
+        - summary
+        - className
+        - categoryName
+        - coverImageUrl
+        - monthlyFeePoisha
+        - oneTimeFeePoisha
+        - instructorName
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        title:
+          type: string
+        summary:
+          type: string
+        className:
+          type: ["string", "null"]
+        categoryName:
+          type: ["string", "null"]
+        coverImageUrl:
+          type: ["string", "null"]
+          format: uri
+        monthlyFeePoisha:
+          type: integer
+          minimum: 0
+        oneTimeFeePoisha:
+          type: integer
+          minimum: 0
+        instructorName:
+          type: ["string", "null"]
+    PublicCourse:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - summary
+        - description
+        - className
+        - categoryName
+        - coverImageUrl
+        - monthlyFeePoisha
+        - oneTimeFeePoisha
+        - instructorName
+        - learningOutcomes
+        - modules
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        title:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        className:
+          type: ["string", "null"]
+        categoryName:
+          type: ["string", "null"]
+        coverImageUrl:
+          type: ["string", "null"]
+          format: uri
+        monthlyFeePoisha:
+          type: integer
+          minimum: 0
+        oneTimeFeePoisha:
+          type: integer
+          minimum: 0
+        instructorName:
+          type: ["string", "null"]
+        learningOutcomes:
+          type: array
+          items:
+            type: string
+        modules:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicModulePreview"
+    PublicModulePreview:
+      type: object
+      required: [title, lessonCount]
+      properties:
+        title:
+          type: string
+        lessonCount:
+          type: integer
+    PublicOverview:
+      type: object
+      required:
+        - siteName
+        - tagline
+        - introduction
+        - activeStudentCount
+        - publishedCourseCount
+        - teacherCount
+        - classes
+        - featuredCourses
+      properties:
+        siteName:
+          type: string
+        tagline:
+          type: string
+        introduction:
+          type: string
+        activeStudentCount:
+          type: integer
+          minimum: 0
+        publishedCourseCount:
+          type: integer
+          minimum: 0
+        teacherCount:
+          type: integer
+          minimum: 0
+        classes:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicClass"
+        featuredCourses:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicCourseSummary"
 
